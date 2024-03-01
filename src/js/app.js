@@ -17,31 +17,26 @@ function navegacionResponsive() {
     };
 };
 
+// Dark Mode 
 function darkMode() {
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
-    const botonDarkMode = document.querySelector('.dark-mode-boton');
-    let isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');//detecta si el usuario tiene activado el modo oscuro en su sistema operativo
+    const botonDarkMode = document.querySelector('.dark-mode-boton');//boton para activar el modo oscuro
+    let isDarkMode = localStorage.getItem('darkMode') === 'true';//detecta si el usuario tiene activado el modo oscuro en la pagina web, get item es para obtener el valor de la clave darkMode
 
-    function setDarkMode() {
+    function setDarkMode() {//funcion para activar el modo oscuro
         isDarkMode = !isDarkMode;
         document.body.classList.toggle('dark-mode', isDarkMode);
         localStorage.setItem('darkMode', isDarkMode);
     }
 
-    botonDarkMode.removeEventListener('click', setDarkMode); // Remove previous event listener
-    botonDarkMode.addEventListener('click', setDarkMode);
-
-    if (prefersDarkMode.matches) {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
+    function updateDarkMode() {//funcion para actualizar el modo oscuro
+        document.body.classList.toggle('dark-mode', prefersDarkMode.matches || isDarkMode);//si el usuario tiene activado el modo oscuro en su sistema operativo o en la pagina web, se activa el modo oscuro
     }
 
-    if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-    }
+    botonDarkMode.removeEventListener('click', setDarkMode);//remueve el evento para evitar que se duplique
+    botonDarkMode.addEventListener('click', setDarkMode);//evento para activar el modo oscuro
+
+    updateDarkMode(); //actualiza el modo oscuro
+
+    prefersDarkMode.addEventListener('change', updateDarkMode);//evento para actualizar el modo oscuro
 }
-
-
-
-
