@@ -74,15 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = "Debes elejir un vendedor";
     }
 
-    if(!$imagen['name'] || $imagen['error']) {
+    if (!$imagen['name'] || $imagen['error']) {
         $errores[] = "La imagen es obligatoria";
-    } 
+    }
 
     // Validar por tamaño (100kb maximo)
 
     $medida = 1000 * 100;
 
-    if($imagen['size'] > $medida) {
+    if ($imagen['size'] > $medida) {
         $errores[] = "La imagen es muy pesada";
     }
 
@@ -92,7 +92,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insertar en la base de datos
     if (empty($errores)) { // Si el arreglo de errores esta vacio entonces se inserta en la base de datos
-        $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitaciones,wc,estacionamiento,creado,vendedores_id) VALUES ('$titulo','$precio','$descripcion','$habitaciones','$wc','$estacionamiento','$creado','$vendedorId')";
+        //**  Subida de archivos  */
+
+        // Crear una carpeta
+
+        $carpetaImagenes = '../../imagenes/';
+        if (!is_dir($carpetaImagenes)) {
+            mkdir($carpetaImagenes);
+        }
+
+        // Generar un nombre unico
+
+        $nombreImagen = md5(uniqid(rand(), true)) . ".jpg"; // Se genera un nombre unico para la imagen
+
+        //Subir la imagen 
+
+        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen); // Se sube la imagen a la carpeta de imagenes    
+
+        //Insertar en la base de datos
+        $query = "INSERT INTO propiedades (titulo,precio,imagen,descripcion,habitaciones,wc,estacionamiento,creado,vendedores_id) VALUES ('$titulo','$precio','$nombreImagen','$descripcion','$habitaciones','$wc','$estacionamiento','$creado','$vendedorId')";
 
         //echo $query;
 
@@ -100,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($resultado) {
             // Redireccionar al usuari o
-            header('Location: /admin');
+            header('Location: /admin?resultado=1');
         }
     }
 }
