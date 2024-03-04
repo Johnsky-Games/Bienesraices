@@ -48,6 +48,13 @@
             border: 1px solid $grisOscuro;
             color: $blanco;
         }
+
+    }
+    .alert {
+        color: $gris;
+        &.error {
+            background-color: $rojo;
+        }
     }
 
 }
