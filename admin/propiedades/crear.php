@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo "<pre>";
     // var_dump($_POST); // Trae la información cuando enviamos una petición por el metodo POST
     // echo "</pre>";
-    echo "<pre>";
-    var_dump($_FILES); // Perminte ver la información de los archivos que se estan enviando
-    echo "</pre>";
+    // echo "<pre>";
+    // var_dump($_FILES); // Perminte ver la información de los archivos que se estan enviando
+    // echo "</pre>";
 
     // Se asignan los valores a las variables y se limpian los datos de posibles inyecciones de codigo malicioso o caracteres especiales que puedan afectar la base de datos o el sistema en general
     $precio = mysqli_real_escape_string($db, $_POST['precio']);

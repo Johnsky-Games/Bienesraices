@@ -40,9 +40,9 @@ $imagenPropiedad = $propiedad['imagen'];
 
 // Ejecuta el codigo despues de que el usuario envia el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "<pre>";
-    var_dump($_POST); // Trae la información cuando enviamos una petición por el metodo POST
-    echo "</pre>";
+    // echo "<pre>";
+    // var_dump($_POST); // Trae la información cuando enviamos una petición por el metodo POST
+    // echo "</pre>";
     // echo "<pre>";
     // var_dump($_FILES); // Perminte ver la información de los archivos que se estan enviando
     // echo "</pre>";
@@ -103,43 +103,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insertar en la base de datos
     if (empty($errores)) { // Si el arreglo de errores esta vacio entonces se inserta en la base de datos
+
         //**  Subida de archivos  */
 
         // Crear una carpeta
 
-        // $carpetaImagenes = '../../imagenes/';
-        // if (!is_dir($carpetaImagenes)) {
-        //     mkdir($carpetaImagenes);
-        // }
-
-        // // Generar un nombre unico
-
-        // $nombreImagen = md5(uniqid(rand(), true)) . ".jpg"; // Se genera un nombre unico para la imagen
-
-        // //Subir la imagen 
-
-        // move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen); // Se sube la imagen a la carpeta de imagenes    
-
-        //Insertar en la base de datos
-        // Uncomment the code block below to create a folder and upload the image
-        /*
         $carpetaImagenes = '../../imagenes/';
+        //Insertar en la base de datos
         if (!is_dir($carpetaImagenes)) {
             mkdir($carpetaImagenes);
         }
 
-        $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-        */
+        $nombreImagen = '';
+
+        if ($imagen['name']) { // Si se sube una imagen entonces se ejecuta el siguiente codigo para subir la imagen a la carpeta de imagenes y se actualiza el nombre de la imagen en la base de datos de la propiedad que se esta actualizando
+            // Eliminar la imagen previa
+            unlink($carpetaImagenes . $propiedad['imagen']);
+
+            // Generar un nombre unico
+
+            $nombreImagen = md5(uniqid(rand(), true)) . ".jpg"; // Se genera un nombre unico para la imagen
+
+            //Subir la imagen 
+
+            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen); // Se sube la imagen a la carpeta de imagenes    
+        } else {
+            $nombreImagen = $propiedad['imagen']; // Si no se sube una imagen se mantiene la imagen que ya estaba en la base de datos
+        }
+
 
         $query = "UPDATE propiedades SET titulo = '" . $titulo . "', precio = '" . $precio . "', imagen = '" . $nombreImagen . "', descripcion = '" . $descripcion . "', habitaciones = " . $habitaciones . ", wc = " . $wc . ", estacionamiento = " . $estacionamiento . ", vendedores_id = " . $vendedorId . " WHERE id = " . $id;
 
         // echo $query;
-    
+
         $resultado = mysqli_query($db, $query);
 
         if ($resultado) {
-            // Redireccionar al usuari o
+            // Redireccionar al usuario
             header('Location: /admin?resultado=2');
         }
     }
