@@ -1,6 +1,16 @@
 <?php
+// Se verifica si el usuario esta autenticado o no sino se redirecciona al index
+require '../includes/funciones.php';
+
+$auth = usuarioAutenticado();
+
+if (!$auth) {
+    header('Location: /');
+}
+
 //importar la conexion
 require '../includes/config/db.php';
+
 $db = conectarDB();
 // Escribir el query
 $query = 'SELECT * FROM propiedades';
@@ -37,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Si se envia un formulario por el
 }
 
 // Incluye un template
-require '../includes/funciones.php';
+
 incluirTemplate('header');
 ?>
 

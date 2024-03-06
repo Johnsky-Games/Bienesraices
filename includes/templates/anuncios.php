@@ -10,6 +10,7 @@
     //Obtener los resultados
 
     $resultado = mysqli_query($db, $query);
+
 ?>
 
 
@@ -43,7 +44,7 @@
                 </li>
             </ul>
 
-            <a href="anuncios.php?id=<?php echo $propiedad['id']; ?>" class="boton-amarillo-block">
+            <a href="anuncio.php?id=<?php echo $propiedad['id']; ?>" class="boton-amarillo-block">
                 Ver porpiedad
             </a>
         </div>

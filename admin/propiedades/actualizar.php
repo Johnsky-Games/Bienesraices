@@ -1,4 +1,13 @@
 <?php
+// Se verifica si el usuario esta autenticado o no sino se redirecciona al index
+require '../../includes/funciones.php';
+
+$auth = usuarioAutenticado();
+
+if (!$auth) {
+    header('Location: /');
+}
+
 // Validar la URL por ID valido
 $id = $_GET['id'];
 $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -147,7 +156,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Importar las funciones
 
-require '../../includes/funciones.php';
 incluirTemplate('header');
 ?>
 

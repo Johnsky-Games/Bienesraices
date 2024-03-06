@@ -1,5 +1,12 @@
 <?php
+// Se verifica si el usuario esta autenticado o no sino se redirecciona al index
+require '../../includes/funciones.php';
 
+$auth = usuarioAutenticado();
+
+if (!$auth) {
+    header('Location: /');
+}
 // Base de datos
 
 require '../../includes/config/db.php';
@@ -125,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Importar las funciones
 
-require '../../includes/funciones.php';
 incluirTemplate('header');
 ?>
 
