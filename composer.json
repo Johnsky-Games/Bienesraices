@@ -1,0 +1,22 @@
+{
+    "name": "john/bienesraices",
+    "description": "Creando proyecto con POO",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./clases"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jonathan Boada",
+            "email": "jonathanboada1@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "./clases"
+        }
+    }
+}

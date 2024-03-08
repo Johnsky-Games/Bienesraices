@@ -1,7 +1,7 @@
 <?php
-// Importar la conexion
+require 'includes/app.php';
 
-require 'includes/config/db.php';
+// Importar la conexion
 $db = conectarDB();
 
 //Autenicar el usuario
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // var_dump($_SESSION);
 // echo "</pre>";
 //Incluye el header
-require 'includes/funciones.php';
+
 incluirTemplate('header');
 
 ?>
@@ -70,9 +70,9 @@ incluirTemplate('header');
     <?php
 
     foreach ($errores as $error) : ?>
-    <div class="alert error">
-        <?php echo $error; ?>
-    </div>
+        <div class="alert error">
+            <?php echo $error; ?>
+        </div>
 
     <?php endforeach; ?>
 
