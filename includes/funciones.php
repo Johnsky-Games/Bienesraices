@@ -7,14 +7,28 @@ function incluirTemplate(string $nombre, bool $inicio = false)
     include TEMPLATES_URL . "/" . $nombre . ".php"; // Path: includes/funciones.php/ Path: includes/funciones.php
 }
 
-function usuarioAutenticado(): bool
+/**
+ * Se autentica el usuario en el sistema para permitir el acceso a las diferentes secciones.
+ * Si el usuario está autenticado, se le permite el acceso a las secciones del sistema.
+ * Si el usuario no está autenticado, se le redirecciona al index del sistema.
+ */
+function usuarioAutenticado()
 { // Se crea una funcion para saber si el usuario esta autenticado o no
     session_start(); // Se inicia la sesion
 
-    $auth = $_SESSION['login']; // Se crea una variable para saber si el usuario esta autenticado o no
-
-    if ($auth) { // Si el usuario no esta autenticado
-        return true; // Se retorna verdadero
+    if (!$_SESSION['login']) { // Si el usuario no esta autenticado
+        header('Location: /'); // Se retorna verdadero
     }
-    return false; // Si el usuario esta autenticado se retorna falso
 } // Path: includes/funciones.php
+
+function debugear($variable)
+{
+    /**
+     * Imprime una etiqueta de apertura de preformateado en el navegador.
+     */
+    echo "<pre>";
+    echo "<pre>";
+    var_dump($variable);
+    echo "</pre>";
+    exit;
+}

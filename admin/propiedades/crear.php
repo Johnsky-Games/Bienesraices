@@ -1,15 +1,13 @@
 <?php
 // Se verifica si el usuario esta autenticado o no sino se redirecciona al index
-require '../../includes/funciones.php';
+require '../../includes/app.php';
 
-$auth = usuarioAutenticado();
+use App\Propiedad;
 
-if (!$auth) {
-    header('Location: /');
-}
+usuarioAutenticado();
+
 // Base de datos
 
-require '../../includes/config/db.php';
 $db = conectarDB();
 
 // Consultar para obtener vendedores
@@ -32,12 +30,12 @@ $vendedorId = '';
 
 // Ejecuta el codigo despues de que el usuario envia el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // echo "<pre>";
-    // var_dump($_POST); // Trae la información cuando enviamos una petición por el metodo POST
-    // echo "</pre>";
-    // echo "<pre>";
-    // var_dump($_FILES); // Perminte ver la información de los archivos que se estan enviando
-    // echo "</pre>";
+
+    $propiedad = new Propiedad($_POST);
+
+    $propiedad->guardar();
+
+    debugear($_FILES);
 
     // Se asignan los valores a las variables y se limpian los datos de posibles inyecciones de codigo malicioso o caracteres especiales que puedan afectar la base de datos o el sistema en general
     $precio = mysqli_real_escape_string($db, $_POST['precio']);
@@ -178,7 +176,7 @@ incluirTemplate('header');
 
         <fieldset>
             <legend>Vendedor</legend>
-            <select name="vendedor" id="">
+            <select name="vendedorId" id="">
                 <option value="">-- Seleccione --</option>
                 <?php
                 while ($vendedor = mysqli_fetch_assoc($resultado)) : ?>
