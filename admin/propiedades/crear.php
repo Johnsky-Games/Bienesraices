@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Setear la imagen
 
-    if ($_FILES['imagen']['tmp_name']) {
+    if ($_FILES['propiedad']['tmp_name']['imagen']) {
         $image = Image::gd()->read($_FILES['propiedad']['tmp_name']['imagen']);
         $image->resize(800, 600);
         $propiedad->setImagen($nombreImagen);
@@ -57,13 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image->save(CARPETA_IMAGENES . $nombreImagen);
 
         // Guardar en la base de datos
-        $resultado = $propiedad->guardar();
-
-        // Mensaje de éxito o error
-        if ($resultado) {
-            // Redireccionar al usuari o
-            header('Location: /admin?resultado=1');
-        }
+        $propiedad->guardar();
     }
 }
 
@@ -77,9 +71,9 @@ incluirTemplate('header');
     <a href="/admin/" class="boton boton-verde">Volver</a>
 
     <?php foreach ($errores as $error) : ?>
-    <div class="alert error">
-        <?php echo $error ?>
-    </div>
+        <div class="alert error">
+            <?php echo $error ?>
+        </div>
     <?php endforeach; ?>
     <form action="/admin/propiedades/crear.php" method="POST" class="formulario" enctype="multipart/form-data">
 

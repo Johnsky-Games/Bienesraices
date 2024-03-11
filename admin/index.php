@@ -18,22 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Si se envia un formulario por el
     // Filtra el id para que sea un entero y no se pueda inyectar codigo malicioso en la base de datos
     if ($id) {
 
-        //Eliminar el archivo
-
-        $query = "SELECT imagen FROM propiedades WHERE id = " . $id; // Selecciona la imagen de la propiedad que se va a eliminar
-
-        $resultado = mysqli_query($db, $query); // Ejecuta la consulta
-        $propiedad = mysqli_fetch_assoc($resultado); // Obtiene la propiedad
-
-        unlink('../imagenes/' . $propiedad['imagen']); // Elimina la imagen de la carpeta imagenes
-
-        //Eliminar la propiedad
-        $query = "DELETE FROM propiedades WHERE id = " . $id;
-        $resultado = mysqli_query($db, $query);
-
-        if ($resultado) {
-            header('Location: /admin?resultado=3');
-        }
+        $propiedad = Propiedad::find($id); // Obtiene la propiedad por su id
+        $propiedad->eliminar();
     }
 }
 
@@ -45,11 +31,11 @@ incluirTemplate('header');
 <main class="contenedor seccion">
     <h1>Administrador de Bienes Raices</h1>
     <?php if (intval($resultado) == 1) : ?>
-    <p class="alert exito">Anuncio creado correctamente.</p>
+        <p class="alert exito">Anuncio creado correctamente.</p>
     <?php elseif (intval($resultado) == 2) : ?>
-    <p class="alert exito">Anuncio Actualizado Correctamente.</p>
+        <p class="alert exito">Anuncio Actualizado Correctamente.</p>
     <?php elseif (intval($resultado) == 3) : ?>
-    <p class="alert exito">Anuncio Eliminado Correctamente.</p>
+        <p class="alert exito">Anuncio Eliminado Correctamente.</p>
     <?php endif; ?>
     <a href="/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
 
@@ -69,23 +55,22 @@ incluirTemplate('header');
     <tbody>
 
         <?php foreach ($propiedades as $propiedad) : ?>
-        <tr>
-            <td><?php echo $propiedad->id; ?></td>
-            <td><?php echo $propiedad->titulo; ?></td>
-            <td><img src=" /imagenes/<?php echo $propiedad->imagen; ?>" class="imagen-tabla" alt="imagen-tabla">
-            </td>
-            <td>$ <?php echo $propiedad->precio; ?></td>
-            <td>
+            <tr>
+                <td><?php echo $propiedad->id; ?></td>
+                <td><?php echo $propiedad->titulo; ?></td>
+                <td><img src=" /imagenes/<?php echo $propiedad->imagen; ?>" class="imagen-tabla" alt="imagen-tabla">
+                </td>
+                <td>$ <?php echo $propiedad->precio; ?></td>
+                <td>
 
-                <form method="POST" class="w-100">
-                    <input type="hidden" name="id" value="<?php echo $propiedad->id; ?>">
-                    <input type="submit" class="boton-rojo-block" value="Eliminar">
-                </form>
+                    <form method="POST" class="w-100">
+                        <input type="hidden" name="id" value="<?php echo $propiedad->id; ?>">
+                        <input type="submit" class="boton-rojo-block" value="Eliminar">
+                    </form>
 
-                <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>"
-                    class="boton-amarillo-block">Actualizar</a>
-            </td>
-        </tr>
+                    <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton-amarillo-block">Actualizar</a>
+                </td>
+            </tr>
         <?php endforeach; ?>
     </tbody>
 </table>

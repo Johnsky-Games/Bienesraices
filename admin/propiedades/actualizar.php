@@ -1,7 +1,7 @@
 <?php
 
 use App\Propiedad;
-
+use  Intervention\Image\ImageManager as Image;
 // Se verifica si el usuario esta autenticado o no sino se redirecciona al index
 require '../../includes/app.php';
 
@@ -35,50 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $propiedad->sincronizar($args);
 
     //Asignar files hacia una variable
-
     $errores = $propiedad->validar();
+    // Generar un nombre unico
+
+    $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+
+    //Setear la imagen
+    // Validación subida de archivos
+    if ($_FILES['propiedad']['tmp_name']['imagen']) {
+        $image = Image::gd()->read($_FILES['propiedad']['tmp_name']['imagen']);
+        $image->resize(800, 600);
+        $propiedad->setImagen($nombreImagen);
+    }
 
     // Insertar en la base de datos
     if (empty($errores)) { // Si el arreglo de errores esta vacio entonces se inserta en la base de datos
+        //Almacenar la imagen
 
-        //**  Subida de archivos  */
+        if ($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image->save(CARPETA_IMAGENES . $nombreImagen);
+        }        
 
-        // Crear una carpeta
-
-        $carpetaImagenes = '../../imagenes/';
-        //Insertar en la base de datos
-        if (!is_dir($carpetaImagenes)) {
-            mkdir($carpetaImagenes);
-        }
-
-        $nombreImagen = '';
-
-        if ($imagen['name']) { // Si se sube una imagen entonces se ejecuta el siguiente codigo para subir la imagen a la carpeta de imagenes y se actualiza el nombre de la imagen en la base de datos de la propiedad que se esta actualizando
-            // Eliminar la imagen previa
-            unlink($carpetaImagenes . $propiedad['imagen']);
-
-            // Generar un nombre unico
-
-            $nombreImagen = md5(uniqid(rand(), true)) . ".jpg"; // Se genera un nombre unico para la imagen
-
-            //Subir la imagen 
-
-            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen); // Se sube la imagen a la carpeta de imagenes    
-        } else {
-            $nombreImagen = $propiedad['imagen']; // Si no se sube una imagen se mantiene la imagen que ya estaba en la base de datos
-        }
-
-
-        $query = "UPDATE propiedades SET titulo = '" . $titulo . "', precio = '" . $precio . "', imagen = '" . $nombreImagen . "', descripcion = '" . $descripcion . "', habitaciones = " . $habitaciones . ", wc = " . $wc . ", estacionamiento = " . $estacionamiento . ", vendedores_id = " . $vendedorId . " WHERE id = " . $id;
-
-        // echo $query;
-
-        $resultado = mysqli_query($db, $query);
-
-        if ($resultado) {
-            // Redireccionar al usuario
-            header('Location: /admin?resultado=2');
-        }
+        $propiedad->guardar();
     }
 }
 
@@ -92,9 +70,9 @@ incluirTemplate('header');
     <a href="/admin/" class="boton boton-verde">Volver</a>
 
     <?php foreach ($errores as $error) : ?>
-        <div class="alert error">
-            <?php echo $error ?>
-        </div>
+    <div class="alert error">
+        <?php echo $error ?>
+    </div>
     <?php endforeach; ?>
     <form method="POST" class="formulario" enctype="multipart/form-data">
 
