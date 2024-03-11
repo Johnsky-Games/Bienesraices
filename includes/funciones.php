@@ -1,6 +1,7 @@
 <?php
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCIONES_URL', __DIR__ . 'funciones.php');
+define('CARPETA_IMAGENES', __DIR__ . '/../imagenes/');
 
 function incluirTemplate(string $nombre, bool $inicio = false)
 { // Path: includes/funciones.php
@@ -31,4 +32,13 @@ function debugear($variable)
     var_dump($variable);
     echo "</pre>";
     exit;
+}
+
+
+// Escapa / sanitiza el HTML
+
+function s($html) : string
+{
+    $s = htmlspecialchars($html);
+    return $s;
 }

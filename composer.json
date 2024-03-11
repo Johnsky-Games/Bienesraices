@@ -13,10 +13,7 @@
             "email": "jonathanboada1@gmail.com"
         }
     ],
-    "require": {},
-    "autoload-dev": {
-        "psr-4": {
-            "App\\": "./clases"
-        }
+    "require": {
+        "intervention/image": "^3.4"
     }
 }

@@ -1,22 +1,13 @@
 <?php
 // Se verifica si el usuario esta autenticado o no sino se redirecciona al index
-require '../includes/funciones.php';
+require '../includes/app.php';
+usuarioAutenticado();
 
-$auth = usuarioAutenticado();
+use App\Propiedad;
 
-if (!$auth) {
-    header('Location: /');
-}
+//Implementar metodo para obtener todas las propiedades
 
-//importar la conexion
-require '../includes/config/db.php';
-
-$db = conectarDB();
-// Escribir el query
-$query = 'SELECT * FROM propiedades';
-//Consultar la base de datos
-
-$resultadoConsulta = mysqli_query($db, $query);
+$propiedades = Propiedad::all();
 
 // Muestra mensaje condicional
 $resultado = $_GET['resultado'] ?? null;
@@ -77,25 +68,25 @@ incluirTemplate('header');
     <!-- Mostrar los resultados -->
     <tbody>
 
-        <?php while ($propiedad = mysqli_fetch_assoc($resultadoConsulta)) : ?>
+        <?php foreach ($propiedades as $propiedad) : ?>
         <tr>
-            <td><?php echo $propiedad['id']; ?></td>
-            <td><?php echo $propiedad['titulo']; ?></td>
-            <td><img src=" /imagenes/<?php echo $propiedad['imagen']; ?>" class="imagen-tabla" alt="imagen-tabla">
+            <td><?php echo $propiedad->id; ?></td>
+            <td><?php echo $propiedad->titulo; ?></td>
+            <td><img src=" /imagenes/<?php echo $propiedad->imagen; ?>" class="imagen-tabla" alt="imagen-tabla">
             </td>
-            <td>$ <?php echo $propiedad['precio']; ?></td>
+            <td>$ <?php echo $propiedad->precio; ?></td>
             <td>
 
                 <form method="POST" class="w-100">
-                    <input type="hidden" name="id" value="<?php echo $propiedad['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $propiedad->id; ?>">
                     <input type="submit" class="boton-rojo-block" value="Eliminar">
                 </form>
 
-                <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad['id']; ?>"
+                <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>"
                     class="boton-amarillo-block">Actualizar</a>
             </td>
         </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </tbody>
 </table>
 
