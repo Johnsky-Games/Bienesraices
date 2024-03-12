@@ -3,20 +3,18 @@
 require '../../includes/app.php';
 
 use App\Propiedad;
+use App\Vendedor;
 use  Intervention\Image\ImageManager as Image;
 
 usuarioAutenticado();
 
 // Base de datos
 
-$db = conectarDB();
-
 $propiedad = new Propiedad;
 
-// Consultar para obtener vendedores
+// Consultar para obtener todos vendedores
 
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
+$vendedores = Vendedor::all();
 
 // Arreglo con mensajes de errores
 

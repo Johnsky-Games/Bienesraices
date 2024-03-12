@@ -4,10 +4,12 @@ require '../includes/app.php';
 usuarioAutenticado();
 
 use App\Propiedad;
+use App\Vendedor;
 
 //Implementar metodo para obtener todas las propiedades
 
 $propiedades = Propiedad::all();
+$vendedores = Vendedor::all();
 
 // Muestra mensaje condicional
 $resultado = $_GET['resultado'] ?? null;
@@ -31,11 +33,11 @@ incluirTemplate('header');
 <main class="contenedor seccion">
     <h1>Administrador de Bienes Raices</h1>
     <?php if (intval($resultado) == 1) : ?>
-        <p class="alert exito">Anuncio creado correctamente.</p>
+    <p class="alert exito">Anuncio creado correctamente.</p>
     <?php elseif (intval($resultado) == 2) : ?>
-        <p class="alert exito">Anuncio Actualizado Correctamente.</p>
+    <p class="alert exito">Anuncio Actualizado Correctamente.</p>
     <?php elseif (intval($resultado) == 3) : ?>
-        <p class="alert exito">Anuncio Eliminado Correctamente.</p>
+    <p class="alert exito">Anuncio Eliminado Correctamente.</p>
     <?php endif; ?>
     <a href="/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
 
@@ -55,22 +57,23 @@ incluirTemplate('header');
     <tbody>
 
         <?php foreach ($propiedades as $propiedad) : ?>
-            <tr>
-                <td><?php echo $propiedad->id; ?></td>
-                <td><?php echo $propiedad->titulo; ?></td>
-                <td><img src=" /imagenes/<?php echo $propiedad->imagen; ?>" class="imagen-tabla" alt="imagen-tabla">
-                </td>
-                <td>$ <?php echo $propiedad->precio; ?></td>
-                <td>
+        <tr>
+            <td><?php echo $propiedad->id; ?></td>
+            <td><?php echo $propiedad->titulo; ?></td>
+            <td><img src=" /imagenes/<?php echo $propiedad->imagen; ?>" class="imagen-tabla" alt="imagen-tabla">
+            </td>
+            <td>$ <?php echo $propiedad->precio; ?></td>
+            <td>
 
-                    <form method="POST" class="w-100">
-                        <input type="hidden" name="id" value="<?php echo $propiedad->id; ?>">
-                        <input type="submit" class="boton-rojo-block" value="Eliminar">
-                    </form>
+                <form method="POST" class="w-100">
+                    <input type="hidden" name="id" value="<?php echo $propiedad->id; ?>">
+                    <input type="submit" class="boton-rojo-block" value="Eliminar">
+                </form>
 
-                    <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton-amarillo-block">Actualizar</a>
-                </td>
-            </tr>
+                <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>"
+                    class="boton-amarillo-block">Actualizar</a>
+            </td>
+        </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
