@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Propiedad extends ActiveRecord
+class Propiedad extends activeRecord
 {
     protected static $tabla = 'propiedades';
     protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedorId'];

@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use App\Vendedor;
 use  Intervention\Image\ImageManager as Image;
 // Se verifica si el usuario esta autenticado o no sino se redirecciona al index
 require '../../includes/app.php';
@@ -17,10 +18,9 @@ if (!$id) {
 
 // Obtener los datos de la propiedad
 $propiedad = Propiedad::find($id);
-// Consultar para obtener vendedores
+// Consultar para obtener todos los vendedores
 
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
+$vendedores = Vendedor::all();
 
 // Arreglo con mensajes de errores
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($_FILES['propiedad']['tmp_name']['imagen']) {
             $image->save(CARPETA_IMAGENES . $nombreImagen);
-        }        
+        }
 
         $propiedad->guardar();
     }
@@ -71,12 +71,12 @@ incluirTemplate('header');
 
     <?php foreach ($errores as $error) : ?>
     <div class="alert error">
-        <?php echo $error ?>
+        <?php echo $error; ?>
     </div>
     <?php endforeach; ?>
     <form method="POST" class="formulario" enctype="multipart/form-data">
 
-        <?php include '../../includes/templates/formulario_propiedades.php' ?>
+        <?php include '../../includes/templates/formulario_propiedades.php'; ?>
 
         <input type="submit" value="Actualizar Propiedad" class="boton boton-verde">
     </form>

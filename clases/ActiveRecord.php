@@ -9,8 +9,8 @@ class activeRecord
     protected static $db;
     protected static $columnasDB = [];
     protected static $tabla = '';
+    
     // Errores de validacion
-
     protected static $errores = [];
 
     //Definir la conexion a la base de datos
@@ -89,7 +89,7 @@ class activeRecord
     public function atributos()
     {
         $atributos = [];
-        foreach (self::$columnasDB as $columna) {
+        foreach (static::$columnasDB as $columna) {
             if ($columna === 'id') continue;
             $atributos[$columna] = $this->$columna;
         }
@@ -173,7 +173,7 @@ class activeRecord
         // Iterar los resultados
         $array = [];
         while ($registro = $resultado->fetch_assoc()) {
-            $array[] = self::crearObjeto($registro);
+            $array[] = static::crearObjeto($registro);
         }
         //Liberar la memoria
         $resultado->free();
