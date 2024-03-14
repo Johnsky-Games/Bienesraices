@@ -69,9 +69,9 @@ incluirTemplate('header');
     <a href="/admin/" class="boton boton-verde">Volver</a>
 
     <?php foreach ($errores as $error) : ?>
-        <div class="alert error">
-            <?php echo $error ?>
-        </div>
+    <div class="alert error">
+        <?php echo $error ?>
+    </div>
     <?php endforeach; ?>
     <form action="/admin/propiedades/crear.php" method="POST" class="formulario" enctype="multipart/form-data">
 
