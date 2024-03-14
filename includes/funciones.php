@@ -45,7 +45,30 @@ function s($html): string
 
 // Validar tipo de contenido
 
-function validarTipoContenido($tipo){
-    $tipos= ['vendedor', 'propiedad'];
+function validarTipoContenido($tipo)
+{
+    $tipos = ['vendedor', 'propiedad'];
     return in_array($tipo, $tipos);
+}
+
+//Muestra las alertas
+function mostrarNotificacion($codigo)
+{
+    $mensaje = '';
+    switch ($codigo) {
+        case 1:
+            $mensaje = 'Creado Correctamente';
+            break;
+        case 2:
+            $mensaje = 'Actualizado Correctamente';
+            break;
+        case 3:
+            $mensaje = 'Eliminado Correctamente';
+            break;
+        default:
+            $mensaje = false;
+            break;
+    }
+
+    return $mensaje;
 }
