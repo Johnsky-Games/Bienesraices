@@ -1,4 +1,5 @@
 <?php
+
     use App\Propiedad;
     // se obtiene el id de la propiedad a mostrar en la url y se filtra para que sea un entero y no se pueda inyectar codigo malicioso en la base de datos
 
@@ -11,6 +12,7 @@
     // Se importa la conexion a la base de datos
 
     $propiedad= Propiedad::find($id);
+
 
 ?>
 

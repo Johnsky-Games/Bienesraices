@@ -9,7 +9,7 @@ class activeRecord
     protected static $db;
     protected static $columnasDB = [];
     protected static $tabla = '';
-    
+
     // Errores de validacion
     protected static $errores = [];
 
@@ -151,6 +151,15 @@ class activeRecord
     public static function all()
     {
         $query = "SELECT * FROM " . static::$tabla;
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
+    // Obtiene determinado numero de registros
+
+    public static function get($cantidad)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $cantidad;
         $resultado = self::consultarSQL($query);
         return $resultado;
     }

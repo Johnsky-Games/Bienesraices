@@ -1,11 +1,14 @@
 <?php
   use App\Propiedad;
 
-  $propiedades = Propiedad::all();
-
-  //limitar a 3 propiedades aleatorias
-    $inicio = rand(0, count($propiedades) - 3);
-    $propiedades = array_slice($propiedades, $inicio, 3);
+  
+  if($_SERVER['SCRIPT_NAME'] === '/anuncios.php'){
+    $propiedades = Propiedad::all();
+    
+} else {
+    
+    $propiedades = Propiedad::get(3);
+    }
 ?>
 
 
